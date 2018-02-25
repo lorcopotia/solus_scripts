@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+# Script written by/escrito por Duanel Garrido Milan for Solus users but use it if you like
+# Email : lorcopotia@hotmail.com
+# GPLv3 2018
+
+lang=es_ES
+arch="$(uname -m)"
+TEMPDIR="/tmp/tixati-temp"
+
+
+## 
+
+## Getting the exact tixati link from web
+function getlink {
+	link="$(curl -L -b empty.txt https://www.tixati.com/download/linux.html | grep -Po '(?<=href=")[^"]*' | grep $arch | grep manual | grep -v asc)"
+	echo "Ok!"
+	mkdir $TEMPDIR && cd $_ && wget -nc -cq $link
+}
+
+## Extracting the file
+function extract_inst {
+	cd $TEMPDIR
+	tar zxf *.tar.gz --strip 1 && sudo cp tixati /usr/bin && sudo cp tixati.png /usr/share/icons/hicolor/48x48/apps && sudo cp tixati.desktop /usr/share/applications
+}
+
+## Getting local language
+locallang="$(locale | grep LANG)"
+llang=${locallang%.*}
+lang2=${llang#*=}
+
+
+if [[ $lang2 = $lang ]]
+then
+	printf '\n'
+	echo Obteniendo link del sitio oficial...
+	
+	if ( getlink ) ; then
+		printf 'OK. \n'
+		echo Descargando tixati desde internet... Por favor espere un momento.
+		extract_inst	
+	else
+		echo "Ha habido un problema! Por favor asegurese de tener conexion a internet."
+	fi
+else
+	printf '\n'
+	echo Getting link from web.
+	
+	if ( getlink ) ; then
+		printf 'OK. \n'
+		echo We have downloaded tixati from source... Copying files into place now.
+		extract_inst
+	else
+		echo "Sorry, there is a problem! Please check your internet conexion."
+	fi
+fi
+
+
+
+
+
