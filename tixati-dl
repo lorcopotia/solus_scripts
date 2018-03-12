@@ -39,6 +39,7 @@ then
 		printf 'OK. \n'
 		echo Descargando tixati desde internet... Por favor espere un momento.
 		extract_inst	
+		cd ; rm -r $TEMPDIR
 	else
 		echo "Ha habido un problema! Por favor asegurese de tener conexion a internet."
 	fi
@@ -50,12 +51,9 @@ else
 		printf 'OK. \n'
 		echo We have downloaded tixati from source... Copying files into place now.
 		extract_inst
+		cd ; rm -r $TEMPDIR
 	else
 		echo "Sorry, there is a problem! Please check your internet conexion."
 	fi
 fi
-
-
-
-
 
